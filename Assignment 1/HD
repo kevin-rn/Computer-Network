@@ -1,0 +1,31 @@
+import java.util.List;
+
+class Solution {
+
+    /**
+     * Calculates the hamming distance of the given code, or returns -1 if it cannot be calculated.
+     *
+     * @param code The code
+     * @return The hamming distance of the given code , or -1 if it cannot be calculated
+     */
+    public static long calculate(List<Long> code) {
+        if(code.size() > 1) {
+            int distance = Integer.MAX_VALUE;
+            int temp = 0;
+            
+            for(int i=0; i < code.size()-1; i++){
+                for(int j = i + 1; j < code.size(); j++){
+                    long xorred = code.get(i)^code.get(j);
+                    temp = Long.bitCount(xorred);
+                    
+                    if(temp < distance && temp != 0){
+                       distance = temp;
+                    }
+                }
+            }
+            return distance;
+            
+        }
+        return -1;
+    }
+}
