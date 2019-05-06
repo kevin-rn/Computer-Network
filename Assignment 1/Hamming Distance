@@ -1,0 +1,72 @@
+
+import java.util.List;
+
+class Solution {
+
+    /**
+     * Calculates the hamming distance of the given code, or returns -1 if it cannot be calculated.
+     *
+     * @param code The code
+     * @return The hamming distance of the given code , or -1 if it cannot be calculated
+     */
+    public static long calculate(List<Long> code) {
+        if(code.size() > 1) {
+            int distance = Integer.MAX_VALUE;
+            int temp = 0;
+            
+            for(int i=0; i < code.size()-1; i++){
+                for(int j = i + 1; j < code.size(); j++){
+                    long xorred = code.get(i)^code.get(j);
+                    temp = Long.bitCount(xorred);
+                    
+                    if(temp < distance && temp != 0){
+                       distance = temp;
+                    }
+                }
+            }
+            return distance;
+            
+        }
+        return -1;
+    }
+}
+
+/*
+Hamming distance
+
+To be able to detect or correct an error in a transmission, the data needs to have redundant information. This extra data can be used by the receiver to check if the original data has changed during the transmission and possibly correct the error. A piece of data together with its redundant information is called a codeword. The set of all possible combinations of valid codewords is called a code.
+
+The Hamming distance is used to count the number of bit positions that two codewords differ. To compute the Hamming distance of an entire code, you need to find the smallest Hamming distance between all combinations of valid codewords in the code.
+
+The error-detecting and error-correcting properties of a code depend on its Hamming distance. To reliably detect d errors, you need a code with a minimal distance of d + 1 because with such a code there is no way that d single-bit errors can change a valid codeword into another valid codeword. When the receiver sees an illegal codeword, it can tell that a transmission error has occurred.
+
+Similarly, to correct d errors, you need a code with a minimal distance of 2d + 1 because that way the legal codewords are so far apart that even with d changes the original codeword is still closer than any other codeword. This means the original codeword can be uniquely determined based on the assumption that a larger number of errors are less likely.
+
+(source: book section 3.2.1)
+Example
+
+Given a Hamming distance of dcode, the following number of single-bit errors can be detected and corrected:
+				
+dcode 	1 	2 	3 	4
+edetection 	0 <= 1-1 	1 <= 2-1 	2 <= 3-1 	3 <= 4-1
+ecorrection 	0 <= (1-1)/2 	0 <= (2-1)/2 	1 <= (3-1)/2 	1 <= (4-1)/2
+
+An example of a Hamming distance calculation can be found in section 3.2.2 of the book.
+Programming exercise
+
+In this programming exercise, you need to calculate the hamming distance of a code. A template will be provided with the correct function signature. A basic test case can be found under the Test tab, but you are highly encouraged to write your own test cases to make sure your implementation is correct.
+
+The program needs to meet the following requirements to pass the exercise:
+- Has a function for calculating the hamming distance
+- Arguments: a list of valid codewords ([integer])
+- Returns: the Hamming distance of the code (integer).
+- If it should not be possible to calculate a distance, return -1
+- Performs all the operations on integers, instead of converting it to strings
+- Supports integers up to 64 bits
+- Hint: in Java in 1 << x, 1 is an int by default. Use 1L to transform it to a long.
+Assumptions
+
+For this assignment you can make the following assumptions:
+- All codewords given are of equal length
+- The given codewords are a set (there no duplicate codewords)
+*/
