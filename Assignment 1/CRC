@@ -1,0 +1,87 @@
+class Solution {
+    /**
+     * Calculates the CRC check value, or -1 if it cannot be calculated.
+     *
+     * @param bitSequence The input bit sequence
+     * @param inputLength The length of the input bit sequence (including possible leading zeros)
+     * @param generatorSequence The generator bit sequence
+     * @return The CRC check value
+     */
+    public static long calculateCRC(long bitSequence, int inputLength, long generatorSequence) {
+        if(inputLength > 0){
+          long divider;                                              //create variable to divide with
+          int generatorLength = (int) Math.floor(Math.log(generatorSequence)/ Math.log(2)) + 1;  //amount of 0's to add
+          if(generatorLength > inputLength) return -1;              //if the bit sequence is smaller than the divider return -1
+          
+          bitSequence = bitSequence << (generatorLength - 1);        //Add 0's to the left by bitshifting
+          inputLength += generatorLength -1;                         //Change the inputlength because you shifted the input sequence
+          
+          //Loop for binary division
+          while(generatorLength -1 < inputLength){
+            divider = generatorSequence << inputLength - generatorLength;  //Shift generatorSequence to the leading bit
+            bitSequence = bitSequence^divider;                              //Xor the two bit sequences
+            inputLength = (int) Math.floor(Math.log(bitSequence)/ Math.log(2)) + 1; //update inputlength
+          }
+          
+          return bitSequence;                                     //return the value
+        }
+        
+        return -1;                                                //in case inputlength is not bigger than 0 return -1
+    }
+
+    /**
+     * Checks the correctness of the bit sequence.
+     *
+     * @param bitSequence The CRC bit sequence including the CRC check value
+     * @param inputLength The length of the input bit sequence (including possible leading zeros)
+     * @param generatorSequence The generator bit sequence used
+     * @param checkSequence The CRC check value to check against
+     * @return true if the sequence is correct, false otherwise
+     */
+    public static boolean checkCRC(long bitSequence, int inputLength, long generatorSequence, long checkSequence) {
+        return checkSequence == calculateCRC(bitSequence, inputLength, generatorSequence);  
+    }
+    
+}
+
+
+
+/**
+ * Error detection codes
+
+To detect errors, different kind of algorithms can be used: repetition codes, parity bits, checksums, cyclic redundancy checks, cryptographic hash functions, and error-correcting codes. In this exercise, you will implement a generic version of the cyclic redundancy check. This is a very common error-detection scheme used for example in the Ethernet protocol.
+Cyclic Redundancy Check (CRC)
+
+The Cyclic Redundancy Check makes use of binary division to calculate a remainder, that is used as the redundant information for the error detection. The divisor is a special polynomial called a generator. This generator determines the properties of the CRC. The amount of single-bit flip errors that a CRC can reliably detect therefore depends on the hamming distance of the code and the order of the generator. The receiver performs the binary division with the same generator to see if the two results match. Although CRC is widely used, it’s not secure against deliberate attacks. Further on in the course, the security of CRCs will be discussed in more depth.
+
+More information about CRCs can be found in section 3.2.2 of the book.
+Example
+
+In the table below, generators for common CRC sizes are listed:
+CRC 	Polynomial
+CRC-1 	x+1
+CRC-8 	x8+x7+x6+x4+x2+1
+CRC-16 	x16+x15+x2+1
+CRC-32 	x32+x26+x23+x22+x16+x12+x11+x10+x8+x7+x5+x4+x2+x+1
+
+An example of a binary division can be found in section 3.2.2 (figure 3-9) of the book.
+Programming exercise
+
+In this programming exercise, you need to implement the generic CRC algorithm. A template will be provided with the correct function signatures. A basic test case can be found under the Test tab, but you are highly encouraged to write your own test cases to make sure your implementation is correct.
+
+The program needs to meet the following requirements to pass the exercise:
+- Has a function for calculating the CRC
+- Arguments: bit sequence (integer), input length (integer), generator sequence (integer)
+- Returns: the remainder of the binary division (integer) also called CRC check value
+- If it should not be possible to calculate the CRC, return -1
+- Has a function for checking the CRC
+- Arguments: bit sequence (integer), input length (integer), generator sequence (integer), check sequence (integer)
+- Returns: if the message is error free (boolean)
+- Performs all the operations on integers, instead of converting it to strings
+- Supports integers up to 64 bits
+- Hint: in Java in 1 << x, 1 is an int by default. Use 1L to transform it to a long.
+Assumptions
+
+For this assignment you can make the following assumptions:
+- You can assume that we will not give you a combination of frame and generator larger than 64 bits.
+*/
