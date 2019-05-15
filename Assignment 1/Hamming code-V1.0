@@ -8,6 +8,7 @@ class Solution {
    * @return The Hamming code sequence
    */
  public static long calcHamming(long bitSequence, int inputLength, boolean isEvenParity) {
+    if(inputLength < 1) return bitSequence;
     int r=0, m = inputLength, power;
     //Count amount of parity bits
     while(true) {
@@ -43,6 +44,7 @@ class Solution {
    * @return The correct Hamming code sequence
    */
   public static long checkHamming(long bitSequence, int inputLength, boolean isEvenParity) {
+    if(inputLength < 1) return bitSequence;
      int r=0, m = inputLength, power, count = 0;
      //Count amount of parity bits
      while(true) {
@@ -53,7 +55,7 @@ class Solution {
     for(int i = 0; i < r; i++) {
       power = (int) Math.pow(2, i);
       long parityCheck = 0;
-      for(int e=power; e <= m; e++) {
+      for(int e=0; e <= m; e++) {
         //check if the current position belongs to the parity bit and xor if it is.
         if((e & power) != 0) parityCheck ^= (bitSequence & (1L << (m - e))) >>> (m-e);
       }
@@ -61,7 +63,8 @@ class Solution {
       if((parityCheck % 2 == 0) != isEvenParity) count += power;
     }
     //flip da bit when there are errors
-    if(count != 0 && count < inputLength)  bitSequence = flip(bitSequence, inputLength - count);
+    if(count > 0 && count <= inputLength)  bitSequence = flip(bitSequence, inputLength - count);
+
     return bitSequence;
   }
   
