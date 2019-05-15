@@ -45,12 +45,12 @@ class Solution {
    */
   public static long checkHamming(long bitSequence, int inputLength, boolean isEvenParity) {
     if(inputLength < 1) return bitSequence;
-     int r=0, m = inputLength, power, count = 0;
+     int r=2, m = inputLength, power, count = 0;
      //Count amount of parity bits
-     while(true) {
-      if(m+r+1 <= Math.pow(2,r)) break;
-      r++;
-    }
+     for(int i = 0; i <= m; i++){
+       if(i == (int) Math.pow(2,r) + 1) r++;
+     }
+
     //Check the parity bits if even or odd
     for(int i = 0; i < r; i++) {
       power = (int) Math.pow(2, i);
@@ -106,3 +106,46 @@ class Solution {
     }
     
 }
+/**
+Error Correction
+
+To correct errors, different kind of algorithms can be used: automatic repeat requests, error-correcting codes (e.g. Hamming code), and hybrid schemes. In this exercise, you will implement an error-correcting code, specifically the Hamming code algorithm.
+Parity-bit
+
+A parity-bit is the simplest form of error detection by adding an extra bit making the number of 1’s even or odd, depending on the type of parity. This can be calculated using a modulo 2 and is used almost everywhere, including Hamming codes.
+Hamming code
+
+Hamming codes use a very specific structure to store redundant information. It was designed to always have a hamming distance of 3. This means it can detect 2 single-bit errors and correct 1. To determine how many redundant bits are necessary to accomplish this, the following formula can be used: (m + r + 1) ≤ 2r (Where m is the length of the message and r the number of redundant bits). Given m, this puts a lower limit on the number of check bits needed to correct single errors.
+
+The redundant bits in a Hamming code are parity bits. Hamming codes can use even parity or odd parity.
+
+The general algorithm for the Hamming code is as follows:
+1. Number the bits starting from 1: bit 1, 2, 3, 4, 5, 6, 7, etc.
+2. Write the bit numbers in binary: 1, 10, 11, 100, 101, 110, 111, etc.
+3. All bit positions that are powers of two (have a single 1 bit in the binary form of their position) are parity bits: 1, 2, 4, 8, etc. (1, 10, 100, 1000)
+4. All other bit positions, with two or more 1 bits in the binary form of their position, are data bits.
+5. Each data bit is included in a unique set of 2 or more parity bits, as determined by the binary form of its bit position.
+- Parity bit 1 covers all bit positions which have the least significant bit set: bit 1 (the parity bit itself), 3, 5, 7, 9, etc.
+- Parity bit 2 covers all bit positions which have the second least significant bit set: bit 2 (the parity bit itself), 3, 6, 7, 10, 11, etc.
+- Parity bit 4 covers all bit positions which have the third least significant bit set: bits 4–7, 12–15, 20–23, etc.
+- Parity bit 8 covers all bit positions which have the fourth least significant bit set: bits 8–15, 24–31, 40–47, etc.
+- In general, each parity bit covers all bits where the bitwise AND of the parity position and the bit position is non-zero.
+
+(source: https://en.wikipedia.org/wiki/Hamming_code#General_algorithm)
+
+More information about Hamming codes can be found in section 3.2.1 of the book.
+Programming exercise
+
+In this programming exercise, you need to implement the Hamming code algorithm. A template will be provided with the correct function signatures. A basic test case can be found under the Test tab, but you are highly encouraged to write your own test cases to make sure your implementation is correct.
+
+The program needs to meet the following requirements to pass the exercise:
+- Has a function for calculating the Hamming code
+- Arguments: bit sequence (integer), input length (integer), uses even parity (boolean)
+- Returns: the Hamming code (integer)
+- Has a function for correcting the Hamming code
+- Arguments: bit sequence (integer), length of Hamming code (integer), uses even parity (boolean)
+- Returns: the corrected Hamming code (integer)
+- Performs all the operations on integers, instead of converting it to strings or arrays/lists
+- Supports integers up to 64 bits
+- Hint: in Java in 1 << x, 1 is an int by default. Use 1L to transform it to a long.
+*/
