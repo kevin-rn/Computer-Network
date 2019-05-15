@@ -1,0 +1,105 @@
+class Solution {
+  /**
+   * Calculates the hamming code of the given bit sequence.
+   * 
+   * @param bitSequence The input bit sequence
+   * @param inputLength The length of the input bit sequence (including possible leading zeros)
+   * @param isEvenParity Boolean indicating if the hamming algorithm should use even parity or not
+   * @return The Hamming code sequence
+   */
+ public static long calcHamming(long bitSequence, int inputLength, boolean isEvenParity) {
+    int r=0, m = inputLength, power;
+    //Count amount of parity bits
+    while(true) {
+        if(m+r+1 <= Math.pow(2,r)) break;
+        r++;
+    }
+    //Insert bit at the location of the parity bits
+    for(int l =0; l < r; l++) {
+        power = (int) Math.pow(2, l);
+        bitSequence = insert(bitSequence, m, power, Long.parseLong("1", 2));
+        m += 1;
+    }
+    //Check the parity bits if even or odd
+    for(int i = 0; i < r; i++) {
+            power = (int) Math.pow(2, i);
+            long parityCheck = 0;
+            for(int e=power; e <= m; e++) {
+              //check if the current position belongs to the parity bit and xor if it is.
+                if((e & power) != 0) parityCheck ^= (bitSequence & (1L << (m - e))) >>> (m-e);
+            }
+            if((parityCheck % 2 == 0) != isEvenParity) bitSequence = flip(bitSequence, m-power);
+            
+    }
+   return bitSequence;
+  }
+
+  /**
+   * Returns the corrected (if needed) hamming code of the given bit sequence.
+   *
+   * @param bitSequence The Hamming code bit sequence
+   * @param inputLength The length of the input bit sequence (including possible leading zeros)
+   * @param isEvenParity Boolean indicating if the hamming algorithm should use even parity or not
+   * @return The correct Hamming code sequence
+   */
+  public static long checkHamming(long bitSequence, int inputLength, boolean isEvenParity) {
+     int r=0, m = inputLength, power, count = 0;
+     //Count amount of parity bits
+     while(true) {
+      if(m+r+1 <= Math.pow(2,r)) break;
+      r++;
+    }
+    //Check the parity bits if even or odd
+    for(int i = 0; i < r; i++) {
+      power = (int) Math.pow(2, i);
+      long parityCheck = 0;
+      for(int e=power; e <= m; e++) {
+        //check if the current position belongs to the parity bit and xor if it is.
+        if((e & power) != 0) parityCheck ^= (bitSequence & (1L << (m - e))) >>> (m-e);
+      }
+      //Get the bit that is probably the error
+      if((parityCheck % 2 == 0) != isEvenParity) count += power;
+    }
+    //flip da bit when there are errors
+    if(count != 0 && count < inputLength)  bitSequence = flip(bitSequence, inputLength - count);
+    return bitSequence;
+  }
+  
+  /**
+   * Returns new long with a inserted value in it at a certain index.
+   * 
+   * @param oldNumber The bit sequence in which something is inserted.
+   * @param inputLength Length of the bit sequence.
+   * @param index The position in which something is inserted.
+   * @param insert The value which we insert.
+   * @return The new bit sequence which contains the inserted value.
+   */
+  public static long insert(long oldNumber, int inputLength, int index, long insert) {
+        //Select first half of the sequence
+        long first = (oldNumber >> (inputLength - index + 1)) << (inputLength - index + 2);
+        //shift the inserted part
+        insert = (insert << (inputLength - index)) << 1;
+        //Select last part
+        long mask = (1L << (inputLength - index + 1))-1;
+        long last = (oldNumber & mask);
+        //Combine and return
+        long number = first | insert | last;
+        return number;
+  }
+  
+  /**
+   * Flips a bit at certain position.
+   * 
+   * @param bitSequence The bit sequence where you flip a bit.
+   * @param offset difference between the bit sequence length and the position to insert.
+   */
+   public static long flip(long bitSequence, int offset) {
+        long before = bitSequence >>> offset;
+        long after = bitSequence - (before << offset);
+        if(before%2 ==0) before++;
+        else before--;
+        before = before << offset;
+        return before+after;
+    }
+    
+}
