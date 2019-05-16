@@ -14,6 +14,7 @@ To select parts of a binary sequence you can make use of bit masks. A bit mask i
 ##### For example:
 
 10110110 (input) AND 11110000 (mask) => 10110000
+
 AND -> &
 
 ### Moving
@@ -27,8 +28,11 @@ To move the selected part left or right in the sequence, bitwise-shifts can be u
 10110110 RIGHT_SHIFT 4                => 00001011
 
 Be careful when shifting numbers by more than 32 steps. This will overflow if the number is not a 64-bit integer 
+
 RIGHT_SHIFT ->  >>
+
 lEFT_SHIFT  ->  <<
+
 for signed number use >>>
 
 ### Combining
