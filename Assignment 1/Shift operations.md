@@ -1,17 +1,17 @@
 ### Debugging:
 To better understand what is happening in the code, you can display the integers as a binary string for debugging purposes
 
-#### Java:
+##### Java:
 Long.toBinaryString(6) => '110'
 
-#### Python:
+##### Python:
 format(6, 'b') => '110'
 
 
 ### Select
 To select parts of a binary sequence you can make use of bit masks. A bit mask is a binary sequence with 1s in the positions that are to be selected. This bit mask is then bitwise-AND'ed with the binary sequence.
 
-#### For example:
+##### For example:
 
 10110110 (input) AND 11110000 (mask) => 10110000
 AND -> &
@@ -19,7 +19,7 @@ AND -> &
 ### Moving
 To move the selected part left or right in the sequence, bitwise-shifts can be used. A shift moves the entire sequence left or right depending on the chosen operator.
 
-##### For example:
+###### For example:
 
 10110110 LEFT_SHIFT 1                 => 101101100
 10110110 LEFT_SHIFT 2                 => 1011011000
