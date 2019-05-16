@@ -7,7 +7,7 @@ Long.toBinaryString(6) => '110'
 ##### Python:
 format(6, 'b') => '110'
 
-
+-----------------------------------------------------------------------------------------------------------------------------
 ### Select
 To select parts of a binary sequence you can make use of bit masks. A bit mask is a binary sequence with 1s in the positions that are to be selected. This bit mask is then bitwise-AND'ed with the binary sequence.
 
@@ -17,6 +17,7 @@ To select parts of a binary sequence you can make use of bit masks. A bit mask i
 
 AND -> &
 
+-----------------------------------------------------------------------------------------------------------------------------
 ### Moving
 To move the selected part left or right in the sequence, bitwise-shifts can be used. A shift moves the entire sequence left or right depending on the chosen operator.
 
@@ -35,6 +36,8 @@ lEFT_SHIFT  ->  <<
 
 for signed number use >>>
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 ### Combining
 To combine multiple bit sequences, a bitwise-OR can be used.
 
@@ -42,6 +45,8 @@ To combine multiple bit sequences, a bitwise-OR can be used.
 
 10110000 OR 00000110                     => 10110110
 OR -> |
+
+-----------------------------------------------------------------------------------------------------------------------------
 
 ### Length
 To calculate the length of the binary sequence (measured from the highest 1 bit), you can make use of:
@@ -60,6 +65,8 @@ Math.floor(Math.log(bitSequence)/ Math.log(2)) + 1      => 8
 
 bit_sequence = int('10110110', 2)
 bit_sequence.bit_length()                   => 8
+
+-----------------------------------------------------------------------------------------------------------------------------
 
 ### Bitcount
 To calculate the amount of 1s in a binary sequence, you can make use of:
