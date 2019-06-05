@@ -1,1 +1,139 @@
+package weblab;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
+/**
+ * Routing table for static routing.
+ * It holds a list of static routes that can be queried to find the gateway which can reach the destination.
+ */
+class RoutingTable {
+  List<Entry<Integer, Entry<Integer, Integer>>> routingTable = new ArrayList<Entry<Integer, Entry<Integer, Integer>>>();
+  public static int ERROR_NO_ROUTE = -1;
+
+  /**
+   * Adds a route to the routing table.
+   *
+   * @param networkPrefix Network prefix
+   * @param subnetMask    Subnet mask
+   * @param gateway       Gateway
+   */
+  public void addRoute(int networkPrefix, int subnetMask, int gateway) {
+      Entry<Integer, Integer> host = new Entry<>(networkPrefix, gateway);
+      Entry<Integer, Entry<Integer, Integer>> network = new Entry<>(subnetMask, host);
+      routingTable.add(network);
+      
+      //Sorting on gateway
+      Collections.sort(routingTable, 
+      (e1, e2) ->  e2.getValue().getValue().compareTo(e1.getValue().getValue())
+      );
+      //Sorting on networkPrefix
+      Collections.sort(routingTable, 
+      (e1, e2) ->  e2.getValue().getKey().compareTo(e1.getValue().getKey())
+      );
+ 
+  }
+
+  /**
+   * Queries the routing table to determine which gateway can reach the desired network the IP address belongs to.
+   *
+   * @param address The IP address we want to route to.
+   * @return The gateway that can reach the desired network, or ERROR_NO_ROUTE when no route to that network can be found.
+   */
+  public int lookupRoute(int address) {
+    for(int i = 0; i < routingTable.size(); i++) {
+      int check = (routingTable.get(i).getKey() & address);       //getting the host part of the address
+      int host = routingTable.get(i).getValue().getKey();         //getting host from current position in list.
+      if((host^check) == 0) return routingTable.get(i).getValue().getValue(); //compare
+    }
+  return ERROR_NO_ROUTE;
+  }
+  
+  /**
+   * Class which holds two values K and V .
+   * Used to hold multiple values in the routingTable list.
+   */
+  static class Entry<K, V> {
+    private K key;
+    private V value;
+
+    public Entry(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey() { return key;    }
+
+    public V getValue() { return value;    }
+
+    public V setValue(V value) {
+        V old = this.value;
+        this.value = value;
+        return old;
+    }
+  } 
+}
+
+/**
+Static routing
+
+Static routing is a type of routing algorithm that makes use of manually configured routing table entries, in contrast to dynamic routing algorithms which use network messages to determine the best routes. When failures happen in the network, static routes will not get updated. They have to be manually updated to use a different route. This already highlight one of the drawbacks of static routing schemes.
+
+Advantages:
+- Little resource usage
+- Secure (Administrators have a lot of control over the routing)
+- Great for small networks (less complexity)
+
+Disadvantages:
+- Human errors
+- Fault tolerance
+
+For more information see section 5.6.2 of the book.
+Routing tables
+
+A router uses its routing table to decide where to forward incoming packets. A typical routing table may contain the following columns:
+- Network destination: The range of destination IPs that can be reached on this network.
+- Subnet mask: This separates the destination IP into its network address and host address components.
+- Gateway: The IP address of the next router to which to send the packet.
+
+When the router receives a packet, it checks which network destination(s) correspond(s) to the packet’s destination address. (If there are multiple network destinations possible, the one with the longest prefix match is preferred.) It then forwards the packet to the appropriate gateway.
+Programming exercise
+
+In this programming exercise, you will implement a static routing table. A template will be provided with the correct function signatures. A basic test case can be found under the Test tab, but you are highly encouraged to write your own test cases to make sure your implementation is correct.
+
+You are given two functions (exact method signatures can be found in the code template):
+
+Add Route (Network Prefix: int, Subnet Mask: int, Gateway: int) -> void
+
+This function is used to add route entries to your static routing table.
+
+Arguments:
+- Network prefix: Network address of the subnet.
+- Subnet Mask: Mask corresponding to the subnet.
+- Gateway: Router that can handle traffic belonging to the subnet.
+All arguments use the same format: an ip address in the form of a 32-bit binary sequence. We provide a function for you in the Library to convert from a decimal IP address representation to a binary one.
+
+"255.255.0.0": str -> 11111111 11111111 00000000 00000000: int 
+
+We use this function in our tests to add entries to your routing table.
+
+Returns: This function should not return anything
+
+Lookup Route (Address: int) -> int
+
+This function is used to lookup the route for a specific IP address.
+
+Arguments:
+- Address: The IP address that we want to route to.
+All arguments use the same format: an ip address in the form of a 32-bit binary sequence. We provide a function for you in the Library to convert from a decimal IP address representation to a binary one.
+
+"255.255.0.0": str -> 11111111 11111111 00000000 00000000: int 
+
+We use this function in our tests to check if your routing logic is correct.
+
+Returns: This function should return the gateway of the matched route as a binary sequence. If no valid route can be found the function should return ERROR_NO_ROUTE, which is mapped to -1 in the code.
+Assumptions
+
+    You can assume that our input is valid and non-malicious.
+    You can assume that the routing table does not change after the intial filling.
+*/
