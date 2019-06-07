@@ -13,23 +13,18 @@ The second goal of this assignment is to implement an ARP table for your router 
 Do not save for requests, only for replies.
 
 You have to implement the function that receives ARP packets: receiveArp(message). This function receives an ARP packet and returns one of three status codes:
-|----------------------------------------------------------
+
 |   OK - If the packet was handled by the system.         |
 |   IGNORE - If the packet was not meant for this system. |
 |   ATTACK - If an attack has been detected.              |
-|----------------------------------------------------------
+|---------------------------------------------------------|
 
 Additionally, when the function receives a request of its own IP address, it returns not a status code, but the ARP reply instead.
 
 The simplified packet looks as follows:
 
-|-------------------|-------------------------|-------------------------|------------------------|------------------------|
 | Opcode: 1 byte    |   Sender Mac: 3 Bytes   |   Sender Ip: 2 Bytes    |   Target Mac: 3 Byes   |   Target IP  2 Bytes   |
 |-------------------|-------------------------|-------------------------|------------------------|------------------------|
-
-
-| Opcode: 1 byte   |   |   |   |   |
-|------------------|---|---|---|---|
 
 Opcode - 1 byte, 1 for request and 2 for reply.
     Rest of the fields are self explanatory.
