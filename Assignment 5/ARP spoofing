@@ -21,11 +21,10 @@ class Arp {
 
   // Receive a message and provide the response. This function returns either a packet, or a status code.
   public String receiveArp(String message) {
-    String Opcode = message.substring(0, 2);
-    String SMac = message.substring(2, 8);
-    String SIP = message.substring(8, 12);
-    // String TMac = message.substring(12, 18);
-    String TIP = message.substring(18);
+    String Opcode = message.substring(0, 2);    //getting the Opcode
+    String SMac = message.substring(2, 8);      //getting the sender mac
+    String SIP = message.substring(8, 12);      //getting the sender IP
+    String TIP = message.substring(18);         //getting the target IP, we can ignore the target mac.
     
     //Check if we already know this address in case of a reply.
     if(arptable.containsKey(Integer.valueOf(SIP, 16)) && Opcode.equals("02")) {
