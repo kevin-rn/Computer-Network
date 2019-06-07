@@ -14,6 +14,7 @@ Do not save for requests, only for replies.
 
 You have to implement the function that receives ARP packets: receiveArp(message). This function receives an ARP packet and returns one of three status codes:
 
+|                                                         |
 |---------------------------------------------------------|
 |   OK - If the packet was handled by the system.         |
 |   IGNORE - If the packet was not meant for this system. |
