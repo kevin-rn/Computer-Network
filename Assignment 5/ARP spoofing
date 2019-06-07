@@ -1,1 +1,52 @@
+import java.util.Map;
+import java.util.HashMap;
+
+class Arp {
+  int ip;
+  int mac;
+  Map<Integer, Integer> arptable;
+
+  // constructor
+  public Arp(int mac, int ip) {
+  this.ip = ip;
+  this.mac = mac;
+  arptable = new HashMap<Integer, Integer>();
+  }
+  
+  // This function returns a spoofed ARP packet:
+  //  The argument passed to this function is the IP address that you want to impersonate.
+  public String spoofArp(int spoofIP) {
+   return "02" + Integer.toHexString(mac) + Integer.toHexString(spoofIP) + "000000" + Integer.toHexString(spoofIP);
+  }
+
+  // Receive a message and provide the response. This function returns either a packet, or a status code.
+  public String receiveArp(String message) {
+    String Opcode = message.substring(0, 2);
+    String SMac = message.substring(2, 8);
+    String SIP = message.substring(8, 12);
+    // String TMac = message.substring(12, 18);
+    String TIP = message.substring(18);
+    
+    //Check if we already know this address in case of a reply.
+    if(arptable.containsKey(Integer.valueOf(SIP, 16)) && Opcode.equals("02")) {
+        for(Map.Entry<Integer, Integer> entry : arptable.entrySet()) {
+         if(Integer.toHexString(entry.getKey()).equals(SIP)) 
+         //if it uses the same IP but a different Mac return ATTACK else IGNORE
+            if(!Integer.toHexString(entry.getValue()).equals(SMac)) return "ATTACK";
+            else return "IGNORE";
+        }
+    }
+    //Check if the sender and target IP are the same for reply.
+    if(SIP.equals(TIP) && Opcode.equals("02")) {
+      arptable.put(Integer.valueOf(SIP, 16), Integer.valueOf(SMac, 16));
+      return "OK";
+    }
+    
+    // For a request, check if it is for this ip address, sent a reply.
+   if(Opcode.equals("01") && TIP.equals(Integer.toHexString(ip))) return "02" + Integer.toHexString(ip) + Integer.toHexString(mac) + SMac + SIP;
+   
+   //All other cases ignore.
+   return "IGNORE";
+  }
+}
 
