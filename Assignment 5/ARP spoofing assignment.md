@@ -17,6 +17,7 @@ You have to implement the function that receives ARP packets: receiveArp(message
 |   OK - If the packet was handled by the system.         |
 |   IGNORE - If the packet was not meant for this system. |
 |   ATTACK - If an attack has been detected.              |
+|---------------------------------------------------------|
 
 Additionally, when the function receives a request of its own IP address, it returns not a status code, but the ARP reply instead.
 
