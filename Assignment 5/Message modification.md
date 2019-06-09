@@ -20,7 +20,7 @@ Task
 Implement the function modifyMessage(message,targetAccount,yourAccount), in which you modify the message in such a way that it correctly decrypts with your account number in it.
 
 Template:
-'''java
+```java
 class Solution {
 
   // Modify the message to contain your own account in the encrypted message.
@@ -29,4 +29,4 @@ class Solution {
   }
 }
 
-'''
+```
