@@ -1,1 +1,21 @@
+import java.math.BigInteger; 
+
+class Solution {
+
+  // Modify the message to contain your own account in the encrypted message.
+  public static String modifyMessage(String message, String targetAccount, String yourAccount) {
+            //Get the target account number from the message
+    String Tacc = message.substring(18, 34);
+           //Create integers from target account number, targetaccount and youraccount
+    BigInteger mes = new BigInteger(Tacc, 16), 
+    target = new BigInteger(targetAccount, 16), 
+    your = new BigInteger(yourAccount, 16);
+           //Decrypt: Xor target account number and the targetAccount to get the key.
+    BigInteger key = mes.xor(target);
+            //Encrypt: Xor yourAccount with the key.
+    your = your.xor(key);
+            //replace the target account number
+    return message.substring(0, 18) + your.toString(16) + message.substring(34);
+  }
+}
 
