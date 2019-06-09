@@ -32,8 +32,8 @@ Opcode - 1 byte, 1 for request and 2 for reply.
     Rest of the fields are self explanatory.
     All fields are hexadecimal
     
-
-Template:
+____________________________________________________________________________________________________________________________
+__Template:__
 ```java
 import java.util.Map;
 
