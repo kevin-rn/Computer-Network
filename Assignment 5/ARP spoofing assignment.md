@@ -31,3 +31,37 @@ The simplified packet looks as follows:
 Opcode - 1 byte, 1 for request and 2 for reply.
     Rest of the fields are self explanatory.
     All fields are hexadecimal
+    
+
+Template:
+```java
+import java.util.Map;
+
+class Arp {
+
+  int ip;
+
+  int mac;
+
+  Map<Integer, Integer> arptable;
+
+  // constructor
+  public Arp(int mac, int ip) {
+  // TODO
+  }
+  
+  // This function returns a spoofed ARP packet:
+  //  The argument passed to this function is the IP address that you want to impersonate.
+  public String spoofArp(int spoofIP) {
+  // TODO
+  }
+
+  // Receive a message and provide the response. This function returns either a packet, or a status code.
+  public String receiveArp(String message) {
+  // TODO
+  }
+}
+```
+    
+    
+    
