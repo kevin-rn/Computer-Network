@@ -18,3 +18,15 @@ In your attack, you are interested in replacing the target account number with y
 Task
 
 Implement the function modifyMessage(message,targetAccount,yourAccount), in which you modify the message in such a way that it correctly decrypts with your account number in it.
+
+Template:
+'''java
+class Solution {
+
+  // Modify the message to contain your own account in the encrypted message.
+  public static String modifyMessage(String message, String targetAccount, String yourAccount) {
+
+  }
+}
+
+'''
