@@ -19,7 +19,9 @@ Task
 
 Implement the function modifyMessage(message,targetAccount,yourAccount), in which you modify the message in such a way that it correctly decrypts with your account number in it.
 
-Template:
+______________________________________________________________________________________________________________________________
+
+__Template:__
 ```java
 class Solution {
 
