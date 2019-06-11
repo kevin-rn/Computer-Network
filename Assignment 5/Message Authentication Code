@@ -1,1 +1,25 @@
+class Solution {
+  private static int count;
+
+  // Add a message autentication code to the message using a specific key.
+  public static String addMac(String message, String key, int messagelength) {
+    return (message += Hash.hash(key+count));
+  }
+
+  // Verify a message autentication code to the message given a specific key.
+  public static boolean checkMac(String message, String key, int messagelength) {
+    if(message.substring(messagelength).equals(Hash.hash(key+count))){
+      count++;
+      return true;
+    } 
+    return false;
+  }
+
+  // Forge a MAC based on the timing differences between messages.
+  public static String forgeMac(String message) {
+
+
+    return message;
+  }
+}
 
