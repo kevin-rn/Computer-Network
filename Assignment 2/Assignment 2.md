@@ -32,3 +32,54 @@ Assumptions
     You may assume that you are always allowed to transmit on a link, even if multiple machines are connected to it
     You may assume that there are no collisions
     You may assume that frames are forwarded to their destination, even if their checksum indicates a transmission error.
+
+
+```java
+import java.util.*;
+
+class Solution {
+    private HashMap<String, Integer> map;
+    private int ports;
+
+  /**
+   * Switch constructor
+   *
+   * @param numberOfPorts The number of ports of the switch.
+   */
+  public Solution(int numberOfPorts) {
+     map = new HashMap<String, Integer>();
+     this.ports = numberOfPorts;
+  }
+
+  /**
+   * Gets called for every incoming message to the switch.
+   *
+   * @param incomingPort The port where the message came in
+   * @param frame The message that came in
+   * @return The ports where the message should be send out from
+   */
+  public List<Integer> send(int incomingPort, String frame) {
+    String incoming, destination;
+    List<Integer> outgoing = new ArrayList<Integer>();
+    
+    incoming = frame.substring(0, 4);
+    destination = frame.substring(4, 8);
+
+    //check if incomingPort is within the number of ports the switch has, if so add it to the switch.
+    if(incomingPort < ports) map.put(incoming, incomingPort);
+    
+    //Check if the switch already contains the destination, if not broadcast to all ports except incomingPort
+    if(!map.containsKey(destination)) {
+          for(int i = 0; i < ports; i++) 
+            if(i != incomingPort) outgoing.add(i);
+          
+    //Check if incomingPort is not the destination port, if so broadcast to the port
+    } else if(incomingPort != map.get(destination))
+      outgoing.add(map.get(destination));
+    
+  
+    return outgoing;
+  }
+  
+}
+```
